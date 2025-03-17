@@ -1,0 +1,53 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Events" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Events</h1>
+  <%= link_to "New Event", new_event_path, class: "btn btn-primary" %>
+</div>
+
+<% if @ongoing_events.any? %>
+  <section class="mb-5">
+    <h2 class="h4 pb-2 mb-4 border-bottom">Happening Now</h2>
+    <div class="row">
+      <% @ongoing_events.each do |event| %>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <%= render event %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>
+
+<section class="mb-5">
+  <h2 class="h4 pb-2 mb-4 border-bottom">Upcoming Events</h2>
+  <div class="row">
+    <% if @upcoming_events.empty? %>
+      <div class="col-12">
+        <div class="alert alert-info">
+          No upcoming events found. <%= link_to "Create one", new_event_path %> now!
+        </div>
+      </div>
+    <% else %>
+      <% @upcoming_events.each do |event| %>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <%= render event %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</section>
+
+<% if @past_events.any? %>
+  <section>
+    <h2 class="h4 pb-2 mb-4 border-bottom">Past Events</h2>
+    <div class="row">
+      <% @past_events.each do |event| %>
+        <div class="col-md-6 col-lg-4 mb-4">
+          <%= render event %>
+        </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>

@@ -1,0 +1,22 @@
+<% content_for :title, "Edit Event - #{@event.name}" %>
+
+<div class="mb-4">
+  <div class="d-flex gap-2">
+    <%= link_to @event, class: "btn btn-outline-secondary" do %>
+      <i class="bi bi-arrow-left"></i> Back to event
+    <% end %>
+    <%= link_to events_path, class: "btn btn-outline-secondary" do %>
+      <i class="bi bi-list"></i> All events
+    <% end %>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-white">
+    <h1 class="card-title mb-0">Edit Event</h1>
+    <p class="text-muted mb-0"><%= @event.name %></p>
+  </div>
+  <div class="card-body">
+    <%= render "form", event: @event %>
+  </div>
+</div>

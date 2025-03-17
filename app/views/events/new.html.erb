@@ -1,0 +1,16 @@
+<% content_for :title, "New Event" %>
+
+<div class="mb-4">
+  <%= link_to events_path, class: "btn btn-outline-secondary" do %>
+    <i class="bi bi-arrow-left"></i> Back to events
+  <% end %>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header bg-white">
+    <h1 class="card-title mb-0">Create New Event</h1>
+  </div>
+  <div class="card-body">
+    <%= render "form", event: @event %>
+  </div>
+</div>
