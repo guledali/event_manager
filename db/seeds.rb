@@ -7,22 +7,83 @@
 #   rails db:seed
 
 require 'open-uri'
+require 'fileutils'
 
 # Clear existing events to avoid duplicates when re-seeding
 Event.destroy_all
 
 puts "Creating events..."
 
+# Helper method to download stock images if they don't exist
+#
+# @param image_url [String] URL of the image to download
+# @param filename [String] Name to save the file as
+# @return [String] Path to the downloaded image
+def download_stock_image(image_url, filename)
+  # Create the destination directory if it doesn't exist
+  destination_dir = Rails.root.join("app/assets/images/events")
+  FileUtils.mkdir_p(destination_dir) unless Dir.exist?(destination_dir)
+
+  file_path = destination_dir.join(filename)
+
+  # Only download if file doesn't exist
+  unless File.exist?(file_path)
+    begin
+      puts "Downloading image from #{image_url}..."
+      downloaded_image = URI.open(image_url)
+      IO.copy_stream(downloaded_image, file_path)
+      puts "Image downloaded successfully!"
+    rescue StandardError => e
+      puts "Error downloading image: #{e.message}"
+      return nil
+    end
+  else
+    puts "Using existing image: #{filename}"
+  end
+
+  file_path
+end
+
+# Stock images for each event type from free sources
+stock_images = {
+  tech_conference: {
+    url: "https://images.pexels.com/photos/2774556/pexels-photo-2774556.jpeg",
+    filename: "tech_conference.jpg"
+  },
+  music_festival: {
+    url: "https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg",
+    filename: "music_festival.jpg"
+  },
+  coding_workshop: {
+    url: "https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg",
+    filename: "coding_workshop.jpg"
+  },
+  charity_gala: {
+    url: "https://images.pexels.com/photos/1114425/pexels-photo-1114425.jpeg",
+    filename: "charity_gala.jpg"
+  },
+  business_networking: {
+    url: "https://images.pexels.com/photos/1170412/pexels-photo-1170412.jpeg",
+    filename: "business_networking.jpg"
+  }
+}
+
+# Download all stock images
+stock_images.each do |key, image_data|
+  download_stock_image(image_data[:url], image_data[:filename])
+end
+
 # Event data to seed the database
 # Each hash represents one event with all required attributes
-events = [
+events_data = [
   {
     name: "Tech Conference 2025",
     description: "Annual technology conference featuring the latest innovations in AI and machine learning. Join us for three days of inspiring keynotes, hands-on workshops, and networking opportunities with industry leaders.",
     start_date: DateTime.now + 30.days,
     end_date: DateTime.now + 32.days,
     location: "San Francisco Convention Center",
-    capacity: 500
+    capacity: 500,
+    image_filename: stock_images[:tech_conference][:filename]
   },
   {
     name: "Music Festival",
@@ -30,7 +91,8 @@ events = [
     start_date: DateTime.now + 60.days,
     end_date: DateTime.now + 63.days,
     location: "Central Park",
-    capacity: 5000
+    capacity: 5000,
+    image_filename: stock_images[:music_festival][:filename]
   },
   {
     name: "Coding Workshop",
@@ -38,7 +100,8 @@ events = [
     start_date: DateTime.now + 15.days,
     end_date: DateTime.now + 15.days + 8.hours,
     location: "Downtown Tech Hub",
-    capacity: 50
+    capacity: 50,
+    image_filename: stock_images[:coding_workshop][:filename]
   },
   {
     name: "Charity Gala",
@@ -46,7 +109,8 @@ events = [
     start_date: DateTime.now + 45.days + 18.hours,
     end_date: DateTime.now + 45.days + 23.hours,
     location: "Grand Hotel Ballroom",
-    capacity: 200
+    capacity: 200,
+    image_filename: stock_images[:charity_gala][:filename]
   },
   {
     name: "Business Networking",
@@ -54,11 +118,30 @@ events = [
     start_date: DateTime.now + 7.days + 17.hours,
     end_date: DateTime.now + 7.days + 20.hours,
     location: "Executive Lounge",
-    capacity: 75
+    capacity: 75,
+    image_filename: stock_images[:business_networking][:filename]
   }
 ]
 
-# Create events in the database
-Event.create!(events)
+# Create events and attach images
+events_data.each do |event_data|
+  image_filename = event_data.delete(:image_filename)
+  event = Event.create!(event_data)
 
-puts "Created #{Event.count} events! Note: You can add images through the UI by editing each event."
+  # Attach image to event
+  image_path = Rails.root.join("app/assets/images/events/#{image_filename}")
+  if File.exist?(image_path)
+    event.image.attach(
+      io: File.open(image_path),
+      filename: image_filename,
+      content_type: "image/jpeg"
+    )
+    puts "✅ Created event: #{event.name} with image"
+  else
+    puts "❌ Created event: #{event.name} without image (file not found)"
+  end
+end
+
+puts "Created #{Event.count} events!"
+puts "#{Event.joins(:image_attachment).count} events have images attached"
+puts "Seed completed successfully!"
