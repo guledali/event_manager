@@ -11,8 +11,8 @@ require 'fileutils'
 
 # Create a default admin user
 puts "Creating default admin user..."
-if User.find_by(email_address: "dhh@hey.com").nil?
-  User.create!(email_address: "dhh@hey.com", password: "admin")
+if User.find_by(email_address: "guled@hey.com").nil?
+  User.create!(email_address: "guled@hey.com", password: "root")
   puts "✅ Default admin user created"
 else
   puts "Default admin user already exists"
