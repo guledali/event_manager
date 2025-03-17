@@ -1,3 +1,11 @@
+<%#
+  Event card partial
+
+  Displays an event in a card format with image, date/time, location, capacity and description
+  Used on index page to show multiple events
+
+  @param event [Event] The event to display
+%>
 <div id="<%= dom_id event %>" class="card h-100 shadow-sm">
   <% if event.image.attached? %>
     <div class="card-img-top" style="height: 180px; overflow: hidden;">

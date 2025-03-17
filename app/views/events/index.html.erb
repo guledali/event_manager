@@ -1,5 +1,17 @@
 <p style="color: green"><%= notice %></p>
 
+<%#
+  Events index page
+
+  Displays a categorized list of events:
+  - Ongoing events (currently happening)
+  - Upcoming events (scheduled for the future)
+  - Past events (already completed)
+
+  @param @ongoing_events [ActiveRecord::Relation<Event>] Events currently in progress
+  @param @upcoming_events [ActiveRecord::Relation<Event>] Events scheduled for the future
+  @param @past_events [ActiveRecord::Relation<Event>] Events that have already ended
+%>
 <% content_for :title, "Events" %>
 
 <div class="d-flex justify-content-between align-items-center mb-4">

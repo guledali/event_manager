@@ -1,3 +1,11 @@
+<%#
+  Event form partial
+
+  Used for both creating new events and editing existing ones
+  Handles form validation errors and image upload/removal
+
+  @param event [Event] The event being created or edited
+%>
 <%= form_with(model: event, class: "mb-4") do |form| %>
   <% if event.errors.any? %>
     <div class="alert alert-danger">

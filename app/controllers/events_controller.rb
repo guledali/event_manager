@@ -1,7 +1,14 @@
-class EventsController < ApplicationController
-  before_action :set_event, only: %i[ show edit update destroy ]
+# frozen_string_literal: true
 
-  # GET /events or /events.json
+# Controller responsible for managing events
+#
+# Handles CRUD operations for events and displays them to users
+class EventsController < ApplicationController
+  before_action :set_event, only: %i[show edit update destroy]
+
+  # Displays list of events grouped by their status
+  #
+  # @return [void]
   def index
     @upcoming_events = Event.upcoming
     @ongoing_events = Event.ongoing
@@ -9,20 +16,28 @@ class EventsController < ApplicationController
     @events = Event.all.order(start_date: :asc)
   end
 
-  # GET /events/1 or /events/1.json
+  # Displays a specific event with detailed information
+  #
+  # @return [void]
   def show
   end
 
-  # GET /events/new
+  # Displays form for creating a new event
+  #
+  # @return [void]
   def new
     @event = Event.new
   end
 
-  # GET /events/1/edit
+  # Displays form for editing an existing event
+  #
+  # @return [void]
   def edit
   end
 
-  # POST /events or /events.json
+  # Creates a new event with the provided parameters
+  #
+  # @return [void]
   def create
     @event = Event.new(event_params)
 
@@ -37,7 +52,10 @@ class EventsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /events/1 or /events/1.json
+  # Updates an existing event with the provided parameters
+  # Also handles image removal if specified
+  #
+  # @return [void]
   def update
     if params[:remove_image] == "1" && @event.image.attached?
       @event.image.purge
@@ -54,7 +72,9 @@ class EventsController < ApplicationController
     end
   end
 
-  # DELETE /events/1 or /events/1.json
+  # Permanently removes an event from the database
+  #
+  # @return [void]
   def destroy
     @event.destroy!
 
@@ -65,13 +85,19 @@ class EventsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_event
-      @event = Event.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def event_params
-      params.require(:event).permit(:name, :description, :start_date, :end_date, :location, :capacity, :image)
-    end
+  # Finds the requested event by ID
+  #
+  # @return [void]
+  # @raise [ActiveRecord::RecordNotFound] If event with provided ID doesn't exist
+  def set_event
+    @event = Event.find(params[:id])
+  end
+
+  # Defines allowed parameters for event creation and updates
+  #
+  # @return [ActionController::Parameters] Sanitized parameters for event
+  def event_params
+    params.require(:event).permit(:name, :description, :start_date, :end_date, :location, :capacity, :image)
+  end
 end

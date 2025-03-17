@@ -1,12 +1,10 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
+# frozen_string_literal: true
+
+# Seed file to generate initial data for the application
+# The data can be loaded with the bin/rails db:seed command or created alongside the database with db:setup.
 #
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# @example Running seeds
+#   rails db:seed
 
 require 'open-uri'
 
@@ -15,7 +13,8 @@ Event.destroy_all
 
 puts "Creating events..."
 
-# Let's create events without images first
+# Event data to seed the database
+# Each hash represents one event with all required attributes
 events = [
   {
     name: "Tech Conference 2025",
@@ -59,7 +58,7 @@ events = [
   }
 ]
 
-# Create events
+# Create events in the database
 Event.create!(events)
 
 puts "Created #{Event.count} events! Note: You can add images through the UI by editing each event."
