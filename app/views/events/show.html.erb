@@ -10,66 +10,108 @@
 <% content_for :title, @event.name %>
 
 <div class="mb-4">
-  <%= link_to events_path, class: "btn btn-outline-secondary mb-3" do %>
-    <i class="bi bi-arrow-left"></i> Back to events
+  <%= link_to events_path, class: "btn btn-outline-primary px-3" do %>
+    <i class="bi bi-arrow-left me-2"></i> Back to Events
   <% end %>
 </div>
 
-<div class="card shadow-sm mb-4">
+<div class="card border-0 shadow-sm overflow-hidden mb-4">
   <% if @event.image.attached? %>
-    <div class="card-img-top text-center bg-light">
-      <%= image_tag @event.image.variant(resize_to_fit: [1200, 500]), class: "img-fluid", style: "max-height: 400px;" %>
+    <div class="card-img-top position-relative">
+      <%= image_tag @event.image.variant(resize_to_fit: [1200, 500]), class: "img-fluid", style: "max-height: 400px; width: 100%; object-fit: cover;" %>
+      <% if @event.start_date > Time.current %>
+        <span class="badge bg-success position-absolute top-0 end-0 m-3">Upcoming</span>
+      <% elsif @event.end_date < Time.current %>
+        <span class="badge bg-secondary position-absolute top-0 end-0 m-3">Past</span>
+      <% else %>
+        <span class="badge bg-info position-absolute top-0 end-0 m-3">Happening Now</span>
+      <% end %>
     </div>
   <% end %>
 
-  <div class="card-header bg-white">
-    <h1 class="card-title mb-0"><%= @event.name %></h1>
+  <div class="card-header bg-white border-0">
+    <h1 class="mb-0 fs-2"><%= @event.name %></h1>
   </div>
 
   <div class="card-body">
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <h5 class="text-muted mb-3">Event Details</h5>
-        <p>
-          <i class="bi bi-calendar me-2"></i>
-          <% if @event.start_date.to_date == @event.end_date.to_date %>
-            <strong><%= @event.start_date.strftime("%B %d, %Y") %></strong><br>
-            <span class="ms-4"><%= @event.start_date.strftime("%I:%M %p") %> - <%= @event.end_date.strftime("%I:%M %p") %></span>
-          <% else %>
-            <strong><%= @event.start_date.strftime("%B %d, %Y") %> - <%= @event.end_date.strftime("%B %d, %Y") %></strong><br>
-            <span class="ms-4">Starts: <%= @event.start_date.strftime("%I:%M %p") %></span><br>
-            <span class="ms-4">Ends: <%= @event.end_date.strftime("%I:%M %p") %></span>
-          <% end %>
-        </p>
+    <div class="row">
+      <div class="col-md-5 mb-4 mb-md-0">
+        <div class="p-3 rounded bg-light mb-3">
+          <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-info-circle me-2 text-primary"></i>Event Details</h5>
 
-        <p>
-          <i class="bi bi-geo-alt me-2"></i>
-          <strong>Location:</strong><br>
-          <span class="ms-4"><%= @event.location %></span>
-        </p>
+          <div class="mb-3">
+            <div class="d-flex align-items-center mb-1">
+              <i class="bi bi-calendar me-2 text-primary"></i>
+              <strong>Date:</strong>
+            </div>
+            <div class="ms-4">
+              <% if @event.start_date.to_date == @event.end_date.to_date %>
+                <%= @event.start_date.strftime("%A, %B %d, %Y") %>
+              <% else %>
+                <%= @event.start_date.strftime("%B %d") %> - <%= @event.end_date.strftime("%B %d, %Y") %>
+              <% end %>
+            </div>
+          </div>
 
-        <p>
-          <i class="bi bi-people me-2"></i>
-          <strong>Capacity:</strong> <%= @event.capacity %> attendees
-        </p>
+          <div class="mb-3">
+            <div class="d-flex align-items-center mb-1">
+              <i class="bi bi-clock me-2 text-primary"></i>
+              <strong>Time:</strong>
+            </div>
+            <div class="ms-4">
+              <% if @event.start_date.to_date == @event.end_date.to_date %>
+                <%= @event.start_date.strftime("%I:%M %p") %> - <%= @event.end_date.strftime("%I:%M %p") %>
+              <% else %>
+                Starts: <%= @event.start_date.strftime("%I:%M %p") %><br>
+                Ends: <%= @event.end_date.strftime("%I:%M %p") %>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex align-items-center mb-1">
+              <i class="bi bi-geo-alt me-2 text-primary"></i>
+              <strong>Location:</strong>
+            </div>
+            <div class="ms-4">
+              <%= @event.location %>
+            </div>
+          </div>
+
+          <div>
+            <div class="d-flex align-items-center mb-1">
+              <i class="bi bi-people me-2 text-primary"></i>
+              <strong>Capacity:</strong>
+            </div>
+            <div class="ms-4">
+              <%= @event.capacity %> attendees
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="col-md-6">
-        <h5 class="text-muted mb-3">Description</h5>
-        <div class="p-3 bg-light rounded">
-          <%= simple_format(@event.description) %>
+      <div class="col-md-7">
+        <div class="p-3 rounded bg-light">
+          <h5 class="border-bottom pb-2 mb-3"><i class="bi bi-file-text me-2 text-primary"></i>Description</h5>
+          <div class="event-description">
+            <%= simple_format(@event.description) %>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="card-footer bg-white d-flex justify-content-between">
-    <%= link_to edit_event_path(@event), class: "btn btn-warning" do %>
-      <i class="bi bi-pencil"></i> Edit
-    <% end %>
+  <div class="card-footer bg-white border-top py-4">
+    <div class="d-flex justify-content-end">
+      <div class="d-flex gap-3">
+        <%= link_to edit_event_path(@event), class: "btn btn-primary px-4 fw-medium shadow-sm" do %>
+          <i class="bi bi-pencil-square me-2"></i> Edit
+        <% end %>
 
-    <%= button_to @event, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Are you sure you want to delete this event?" } } do %>
-      <i class="bi bi-trash"></i> Delete
-    <% end %>
+        <%= button_to @event, method: :delete, class: "btn btn-danger px-4 fw-medium shadow-sm", form: { data: { turbo_confirm: "Are you sure you want to delete this event?" } } do %>
+          <i class="bi bi-trash me-2"></i> Delete
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>

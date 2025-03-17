@@ -6,22 +6,36 @@
 
   @param event [Event] The event to display
 %>
-<div id="<%= dom_id event %>" class="card h-100 shadow-sm">
+<div id="<%= dom_id event %>" class="card h-100 border-0 shadow-sm">
   <% if event.image.attached? %>
-    <div class="card-img-top" style="height: 180px; overflow: hidden;">
+    <div class="card-img-top position-relative" style="height: 180px; overflow: hidden;">
       <%= image_tag event.image.variant(resize_to_fill: [400, 180]), class: "w-100 h-100 object-fit-cover" %>
+      <% if event.start_date > Time.current %>
+        <span class="badge bg-success position-absolute top-0 end-0 m-2">Upcoming</span>
+      <% elsif event.end_date < Time.current %>
+        <span class="badge bg-secondary position-absolute top-0 end-0 m-2">Past</span>
+      <% else %>
+        <span class="badge bg-info position-absolute top-0 end-0 m-2">Happening Now</span>
+      <% end %>
     </div>
   <% else %>
-    <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
-      <i class="bi bi-calendar-event text-secondary" style="font-size: 3rem;"></i>
+    <div class="card-img-top bg-light d-flex align-items-center justify-content-center position-relative" style="height: 180px;">
+      <i class="bi bi-calendar-event text-primary" style="font-size: 3rem;"></i>
+      <% if event.start_date > Time.current %>
+        <span class="badge bg-success position-absolute top-0 end-0 m-2">Upcoming</span>
+      <% elsif event.end_date < Time.current %>
+        <span class="badge bg-secondary position-absolute top-0 end-0 m-2">Past</span>
+      <% else %>
+        <span class="badge bg-info position-absolute top-0 end-0 m-2">Happening Now</span>
+      <% end %>
     </div>
   <% end %>
 
   <div class="card-body">
-    <h5 class="card-title text-primary mb-3"><%= event.name %></h5>
+    <h5 class="card-title mb-3"><%= event.name %></h5>
 
-    <p class="card-text text-muted mb-2">
-      <i class="bi bi-calendar"></i>
+    <p class="card-text mb-2 small">
+      <i class="bi bi-calendar text-primary me-1"></i>
       <% if event.start_date.to_date == event.end_date.to_date %>
         <%= event.start_date.strftime("%B %d, %Y") %>
         (<%= event.start_date.strftime("%I:%M %p") %> - <%= event.end_date.strftime("%I:%M %p") %>)
@@ -30,12 +44,12 @@
       <% end %>
     </p>
 
-    <p class="card-text text-muted mb-2">
-      <i class="bi bi-geo-alt"></i> <%= event.location %>
+    <p class="card-text mb-2 small">
+      <i class="bi bi-geo-alt text-primary me-1"></i> <%= event.location %>
     </p>
 
-    <p class="card-text text-muted mb-3">
-      <i class="bi bi-people"></i> Capacity: <%= event.capacity %>
+    <p class="card-text mb-3 small">
+      <i class="bi bi-people text-primary me-1"></i> Capacity: <%= event.capacity %>
     </p>
 
     <div class="card-text mb-3">
@@ -43,7 +57,9 @@
     </div>
   </div>
 
-  <div class="card-footer bg-white border-top-0">
-    <%= link_to "View Details", event, class: "btn btn-outline-primary btn-sm" %>
+  <div class="card-footer border-top-0 bg-transparent">
+    <%= link_to event, class: "btn btn-sm btn-outline-primary w-100 py-2 fw-medium" do %>
+      <i class="bi bi-eye me-1"></i> View Details
+    <% end %>
   </div>
 </div>
