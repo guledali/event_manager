@@ -3,7 +3,7 @@
 # Event model for managing event details and functionality
 #
 # @attr [String] name The name/title of the event
-# @attr [Text] description Detailed description of the event
+# @attr [Text] description Detailed description of the event with rich text support
 # @attr [DateTime] start_date When the event begins
 # @attr [DateTime] end_date When the event ends
 # @attr [String] location Where the event will be held
@@ -11,13 +11,14 @@
 # @attr [ActiveStorage::Attachment] image Optional event promotional image
 class Event < ApplicationRecord
   has_one_attached :image
+  has_rich_text :description
 
   validates :name, presence: true
-  validates :description, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
   validates :location, presence: true
   validates :capacity, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :description, presence: true
 
   validate :acceptable_image, if: -> { image.attached? }
   validate :end_date_after_start_date

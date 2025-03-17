@@ -7,7 +7,10 @@ class EventsController < ApplicationController
   include Authentication
 
   before_action :set_event, only: %i[show edit update destroy]
+  # We're using the Authentication concern which already has a require_authentication before_action
+  # The ApplicationController has allow_unauthenticated_access for index and show
   before_action :check_authentication, except: %i[index show]
+  before_action :ensure_session_resumed, only: [ :index, :show ]
 
   # Displays list of events grouped by their status
   #
@@ -89,10 +92,21 @@ class EventsController < ApplicationController
 
   private
 
-  # Custom check for authentication that redirects to events index with a flash message
+  # Ensures that the session is resumed properly for public pages
+  # where authentication is not required
+  #
+  # @return [void]
+  def ensure_session_resumed
+    resume_session
+  end
+
+  # Custom check for authentication that displays a specific message for event management
+  #
+  # @return [void]
   def check_authentication
     unless authenticated?
-      redirect_to request.referer || events_path, alert: "You need to be logged in to manage events."
+      flash[:alert] = "You need to be logged in to manage events."
+      redirect_to request.referer || events_path
       false
     end
   end
@@ -105,7 +119,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
   end
 
-  # Defines allowed parameters for event creation and updates
+  # Whitelists permitted parameters for event creation and updates
   #
   # @return [ActionController::Parameters] Sanitized parameters for event
   def event_params

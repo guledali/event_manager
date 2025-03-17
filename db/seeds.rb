@@ -87,7 +87,23 @@ end
 events_data = [
   {
     name: "Tech Conference 2025",
-    description: "Annual technology conference featuring the latest innovations in AI and machine learning. Join us for three days of inspiring keynotes, hands-on workshops, and networking opportunities with industry leaders.",
+    description: %(
+      <div>
+        <h3>Annual Technology Conference</h3>
+        <p>Join us for three days of inspiring <strong>keynotes</strong>, hands-on workshops, and networking opportunities with industry leaders.</p>
+
+        <h4>Event Highlights:</h4>
+        <ul>
+          <li>Keynote speeches from tech industry leaders</li>
+          <li>Hands-on workshops on the latest technologies</li>
+          <li>Networking sessions with peers and mentors</li>
+          <li>Product showcases and demonstrations</li>
+          <li>Career opportunities and recruitment</li>
+        </ul>
+
+        <p>This event will feature the latest innovations in <em>AI and machine learning</em>. Don't miss this chance to stay ahead in the rapidly evolving tech landscape!</p>
+      </div>
+    ),
     start_date: DateTime.now + 30.days,
     end_date: DateTime.now + 32.days,
     location: "San Francisco Convention Center",
@@ -96,7 +112,23 @@ events_data = [
   },
   {
     name: "Music Festival",
-    description: "Three-day outdoor music festival with top artists from around the world. Experience diverse musical genres, food vendors, art installations, and create unforgettable memories with friends.",
+    description: %(
+      <div>
+        <h3>Three-Day Outdoor Music Experience</h3>
+        <p>Experience <strong>diverse musical genres</strong>, food vendors, art installations, and create unforgettable memories with friends.</p>
+
+        <h4>Festival Features:</h4>
+        <ul>
+          <li>Multiple stages with international artists</li>
+          <li>Diverse food court with local and international cuisine</li>
+          <li>Art installations and interactive experiences</li>
+          <li>Camping options available on-site</li>
+          <li>Family-friendly areas and activities</li>
+        </ul>
+
+        <p>Our lineup includes top artists from around the world performing across <em>five uniquely themed stages</em>. Come for the music, stay for the experience!</p>
+      </div>
+    ),
     start_date: DateTime.now + 60.days,
     end_date: DateTime.now + 63.days,
     location: "Central Park",
@@ -105,7 +137,23 @@ events_data = [
   },
   {
     name: "Coding Workshop",
-    description: "Hands-on workshop teaching the fundamentals of Ruby on Rails development. Perfect for beginners who want to learn web development in a supportive environment with experienced mentors.",
+    description: %(
+      <div>
+        <h3>Learn Web Development with Ruby on Rails</h3>
+        <p>This <strong>hands-on workshop</strong> teaches the fundamentals of Ruby on Rails development in a supportive environment with experienced mentors.</p>
+
+        <h4>Workshop Curriculum:</h4>
+        <ul>
+          <li>Setting up your development environment</li>
+          <li>Ruby programming fundamentals</li>
+          <li>MVC architecture in Rails</li>
+          <li>Building your first web application</li>
+          <li>Deploying your application</li>
+        </ul>
+
+        <p>Perfect for beginners who want to start their journey into web development. All participants will leave with a <em>functioning web application</em> they built themselves!</p>
+      </div>
+    ),
     start_date: DateTime.now + 15.days,
     end_date: DateTime.now + 15.days + 8.hours,
     location: "Downtown Tech Hub",
@@ -114,7 +162,23 @@ events_data = [
   },
   {
     name: "Charity Gala",
-    description: "Annual fundraising event supporting local community initiatives. Join us for an elegant evening featuring a gourmet dinner, live entertainment, silent auction, and opportunities to contribute to meaningful causes.",
+    description: %(
+      <div>
+        <h3>Annual Fundraising Event</h3>
+        <p>Join us for an <strong>elegant evening</strong> supporting local community initiatives, featuring a gourmet dinner, live entertainment, and silent auction.</p>
+
+        <h4>Gala Program:</h4>
+        <ul>
+          <li>Welcome reception with champagne</li>
+          <li>Five-course gourmet dinner</li>
+          <li>Live entertainment and performances</li>
+          <li>Silent and live auctions</li>
+          <li>Recognition of community leaders</li>
+        </ul>
+
+        <p>All proceeds will benefit our foundation's work in <em>education, healthcare, and community development</em>. Your participation makes a difference!</p>
+      </div>
+    ),
     start_date: DateTime.now + 45.days + 18.hours,
     end_date: DateTime.now + 45.days + 23.hours,
     location: "Grand Hotel Ballroom",
@@ -123,7 +187,23 @@ events_data = [
   },
   {
     name: "Business Networking",
-    description: "Monthly networking event for entrepreneurs and business professionals. Connect with like-minded individuals, share insights, discover potential partnerships, and expand your professional network in a relaxed setting.",
+    description: %(
+      <div>
+        <h3>Monthly Professional Connections</h3>
+        <p>Connect with <strong>like-minded professionals</strong>, share insights, discover potential partnerships, and expand your network in a relaxed setting.</p>
+
+        <h4>Event Schedule:</h4>
+        <ul>
+          <li>Structured networking activities</li>
+          <li>Short presentations from industry experts</li>
+          <li>Refreshments and light appetizers</li>
+          <li>Business card exchange</li>
+          <li>Follow-up resources and connections</li>
+        </ul>
+
+        <p>This month's theme focuses on <em>sustainable business practices</em>. Come prepared to share your experiences and learn from others in the field!</p>
+      </div>
+    ),
     start_date: DateTime.now + 7.days + 17.hours,
     end_date: DateTime.now + 7.days + 20.hours,
     location: "Executive Lounge",

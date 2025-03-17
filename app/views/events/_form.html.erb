@@ -84,7 +84,8 @@
 
         <div class="col-12 mb-3">
           <%= form.label :description, class: "form-label fw-medium" %>
-          <%= form.text_area :description, class: "form-control", rows: 6, placeholder: "Provide details about your event, what attendees can expect, schedule, etc.", required: true %>
+          <%= form.rich_text_area :description, placeholder: "Provide details about your event, what attendees can expect, schedule, etc.", required: true, data: { controller: "trix-editor" } %>
+          <div class="form-text text-muted small">You can add formatting and links to your description</div>
         </div>
       </div>
     </div>

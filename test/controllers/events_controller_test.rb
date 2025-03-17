@@ -29,7 +29,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get events_url
     assert_response :success
-    assert_select "h1", "Events"
+    assert_select "h1", "Discover Events"
     assert_select ".card", minimum: 3
   end
 

@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+	  "module": "esnext",
+	  "baseUrl": "./",
+	  "paths": {
+		"@hotwired/*": ["app/javascript/*"]
+	  }
+	},
+	"include": ["app/javascript/**/*"]
+  }

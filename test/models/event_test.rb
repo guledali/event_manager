@@ -38,7 +38,9 @@ class EventTest < ActiveSupport::TestCase
       location: "Test location",
       capacity: 100
     )
-    assert_not event.save, "Saved the event without a description"
+    # Since ActionText descriptions are validated differently, we need to check for error
+    event.save
+    assert_includes event.errors[:description], "can't be blank"
   end
 
   # Tests that events require a start date to be valid
@@ -206,5 +208,77 @@ class EventTest < ActiveSupport::TestCase
     assert_not_includes ongoing_events, events(:conference)
     assert_not_includes ongoing_events, events(:workshop)
     assert_not_includes ongoing_events, events(:past_event)
+  end
+
+  # Tests that events can save rich text content in description
+  #
+  # @return [void]
+  test "should save event with rich text description" do
+    event = Event.new(
+      name: "Rich Text Event",
+      start_date: DateTime.now + 1.day,
+      end_date: DateTime.now + 2.days,
+      location: "Test location",
+      capacity: 100
+    )
+
+    # HTML content with formatting
+    html_content = "<div>This is a <strong>formatted</strong> description with <em>styling</em>.</div>"
+    event.description = ActionText::Content.new(html_content)
+
+    assert event.save, "Could not save event with rich text description"
+    assert_includes event.description.to_s, "<strong>formatted</strong>"
+    assert_includes event.description.to_s, "<em>styling</em>"
+  end
+
+  # Tests that rich text description preserves formatting
+  #
+  # @return [void]
+  test "should preserve formatting in rich text description" do
+    event = Event.new(
+      name: "Formatted Content Event",
+      start_date: DateTime.now + 1.day,
+      end_date: DateTime.now + 2.days,
+      location: "Test location",
+      capacity: 100
+    )
+
+    html_content = '<div>This has a <a href="https://example.com">link</a> and <strong>bold text</strong>.</div>'
+    event.description = ActionText::Content.new(html_content)
+
+    assert event.save, "Could not save event with formatted rich text"
+    assert_includes event.description.to_s, '<a href="https://example.com">link</a>'
+    assert_includes event.description.to_s, "<strong>bold text</strong>"
+  end
+
+  # Tests that ActionText description doesn't contain attachments
+  #
+  # @return [void]
+  test "action text description should not contain attachments" do
+    event = Event.create!(
+      name: "No Attachments Event",
+      start_date: DateTime.now + 1.day,
+      end_date: DateTime.now + 2.days,
+      location: "Test location",
+      capacity: 100,
+      description: ActionText::Content.new("Simple text description")
+    )
+
+    # Attempt to add HTML with an attachment figure
+    html_with_attachment = <<~HTML
+      <div>
+        Text with an image
+        <figure data-trix-attachment='{"sgid":"BAh123"}'>
+          <img src="data:image/png;base64,iVBORw0=">
+        </figure>
+      </div>
+    HTML
+
+    event.update!(description: html_with_attachment)
+    event.reload
+
+    # Verify the content doesn't include an attachment
+    refute_includes event.description.to_s, "<figure data-trix-attachment"
+    assert_includes event.description.to_s, "Text with an image"
   end
 end

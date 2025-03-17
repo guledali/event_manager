@@ -1,0 +1,29 @@
+# one:
+#   record: name_of_fixture (ClassOfFixture)
+#   name: content
+#   body: <p>In a <i>million</i> stars!</p>
+
+conference_description:
+  record: conference (Event)
+  name: description
+  body: <div>Annual technology conference featuring the latest innovations in AI and machine learning.</div>
+
+workshop_description:
+  record: workshop (Event)
+  name: description
+  body: <div>Hands-on workshop teaching the fundamentals of <strong>Ruby on Rails</strong> development.</div>
+
+past_event_description:
+  record: past_event (Event)
+  name: description
+  body: <div>A conference that already happened.</div>
+
+ongoing_event_description:
+  record: ongoing_event (Event)
+  name: description
+  body: <div>An exhibition that is <em>currently</em> happening.</div>
+
+invalid_dates_description:
+  record: invalid_dates (Event)
+  name: description
+  body: <div>Event with end date before start date.</div>

@@ -2,7 +2,6 @@
 
 conference:
   name: Tech Conference 2025
-  description: Annual technology conference featuring the latest innovations in AI and machine learning.
   start_date: <%= DateTime.now + 30.days %>
   end_date: <%= DateTime.now + 32.days %>
   location: San Francisco Convention Center
@@ -10,7 +9,6 @@ conference:
 
 workshop:
   name: Coding Workshop
-  description: Hands-on workshop teaching the fundamentals of Ruby on Rails development.
   start_date: <%= DateTime.now + 15.days %>
   end_date: <%= DateTime.now + 15.days + 8.hours %>
   location: Downtown Tech Hub
@@ -18,7 +16,6 @@ workshop:
 
 past_event:
   name: Past Conference
-  description: A conference that already happened.
   start_date: <%= DateTime.now - 60.days %>
   end_date: <%= DateTime.now - 58.days %>
   location: Convention Center
@@ -26,7 +23,6 @@ past_event:
 
 ongoing_event:
   name: Current Exhibition
-  description: An exhibition that is currently happening.
   start_date: <%= DateTime.now - 2.days %>
   end_date: <%= DateTime.now + 5.days %>
   location: Art Gallery
@@ -34,7 +30,6 @@ ongoing_event:
 
 invalid_dates:
   name: Invalid Event
-  description: Event with end date before start date.
   start_date: <%= DateTime.now + 10.days %>
   end_date: <%= DateTime.now + 5.days %>
   location: Test Location

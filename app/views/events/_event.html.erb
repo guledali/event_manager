@@ -53,7 +53,7 @@
     </p>
 
     <div class="card-text mb-3">
-      <%= truncate(event.description, length: 100) %>
+      <%= strip_tags(event.description.to_plain_text).truncate(100) %>
     </div>
   </div>
 
