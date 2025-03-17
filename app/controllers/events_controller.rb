@@ -4,7 +4,10 @@
 #
 # Handles CRUD operations for events and displays them to users
 class EventsController < ApplicationController
+  include Authentication
+
   before_action :set_event, only: %i[show edit update destroy]
+  before_action :check_authentication, except: %i[index show]
 
   # Displays list of events grouped by their status
   #
@@ -85,6 +88,14 @@ class EventsController < ApplicationController
   end
 
   private
+
+  # Custom check for authentication that redirects to events index with a flash message
+  def check_authentication
+    unless authenticated?
+      redirect_to request.referer || events_path, alert: "You need to be logged in to manage events."
+      false
+    end
+  end
 
   # Finds the requested event by ID
   #

@@ -40,9 +40,23 @@
             <li class="nav-item">
               <%= link_to "Events", events_path, class: "nav-link" %>
             </li>
-            <li class="nav-item">
-              <%= link_to "New Event", new_event_path, class: "nav-link" %>
-            </li>
+            <% if Current.user %>
+              <li class="nav-item">
+                <%= link_to "New Event", new_event_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-person-circle"></i> <%= Current.user.email_address %>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                  <%= button_to "Sign out", session_path, method: :delete, class: "dropdown-item" %>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "Sign in", new_session_path, class: "nav-link" %>
+              </li>
+            <% end %>
           </ul>
         </div>
       </div>
