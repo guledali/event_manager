@@ -13,6 +13,13 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
     @event = events(:conference)
     @invalid_event = events(:invalid_dates)
     @test_image = fixture_file_upload("test_image.jpg", "image/jpeg")
+    @user = users(:one)
+
+    # Log in the user for tests that require authentication
+    post session_url, params: {
+      email_address: @user.email_address,
+      password: "password"
+    }
   end
 
   # Tests that the index action returns a successful response
