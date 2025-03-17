@@ -46,7 +46,8 @@ module Authentication
     end
 
     def terminate_session
-      Current.session.destroy
+      session_to_destroy = Current.session || find_session_by_cookie
+      session_to_destroy&.destroy
       cookies.delete(:session_id)
     end
 end

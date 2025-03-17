@@ -48,30 +48,29 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   # Tests that a user can log out
-  # Skipping for now due to issues with Current.session being nil
   #
   # @return [void]
-  # test "should destroy session" do
-  #   # First log in
-  #   post session_url, params: {
-  #     email_address: @user.email_address,
-  #     password: "password"
-  #   }
-  #
-  #   # Verify we're logged in
-  #   assert cookies[:session_id].present?
-  #
-  #   # Count sessions before logout
-  #   session_count = Session.count
-  #
-  #   # Then log out
-  #   delete session_url
-  #
-  #   # Verify we're redirected and cookie is cleared
-  #   assert_redirected_to new_session_path
-  #   assert_nil cookies[:session_id]
-  #
-  #   # Verify a session was destroyed
-  #   assert_equal session_count - 1, Session.count
-  # end
+  test "should destroy session" do
+    # First log in
+    post session_url, params: {
+      email_address: @user.email_address,
+      password: "password"
+    }
+
+    # Verify we're logged in
+    assert cookies[:session_id].present?
+
+    # Count sessions before logout
+    session_count = Session.count
+
+    # Then log out
+    delete session_url
+
+    # Verify we're redirected and cookie is cleared
+    assert_redirected_to new_session_path
+    assert_empty cookies[:session_id]
+
+    # Verify a session was destroyed
+    assert_equal session_count - 1, Session.count
+  end
 end
