@@ -5,6 +5,7 @@
 # Handles CRUD operations for events and displays them to users
 class EventsController < ApplicationController
   include Authentication
+  include ResponseHandling
 
   before_action :set_event, only: %i[show edit update destroy]
   before_action :authenticate_for_management, except: %i[index show]
@@ -44,7 +45,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
 
-    respond_with_result(@event.save, @event)
+    respond_with_result(@event.save, @event, resource_name: "Event")
   end
 
   # Updates an existing event with the provided parameters
@@ -53,7 +54,7 @@ class EventsController < ApplicationController
   # @return [void]
   def update
     handle_image_removal if params[:remove_image] == "1"
-    respond_with_result(@event.update(event_params), @event)
+    respond_with_result(@event.update(event_params), @event, resource_name: "Event")
   end
 
   # Permanently removes an event from the database
@@ -101,22 +102,5 @@ class EventsController < ApplicationController
   # @return [ActionController::Parameters] Sanitized parameters for event
   def event_params
     params.require(:event).permit(:name, :description, :start_date, :end_date, :location, :capacity, :image)
-  end
-
-  # Standard response handling for create and update actions
-  #
-  # @param success [Boolean] Whether the operation was successful
-  # @param resource [Event] The event being created or updated
-  # @return [void]
-  def respond_with_result(success, resource)
-    respond_to do |format|
-      if success
-        format.html { redirect_to event_url(resource), notice: "Event was successfully #{resource.previously_new_record? ? 'created' : 'updated'}." }
-        format.json { render :show, status: resource.previously_new_record? ? :created : :ok, location: resource }
-      else
-        format.html { render resource.previously_new_record? ? :new : :edit, status: :unprocessable_entity }
-        format.json { render json: resource.errors, status: :unprocessable_entity }
-      end
-    end
   end
 end

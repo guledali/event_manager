@@ -64,6 +64,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_select "h1", "New Test Event"
     assert Event.last.image.attached?
+    assert_equal "Event 'New Test Event' was successfully created.", flash[:notice]
   end
 
   # Tests that invalid event data is rejected and renders
@@ -84,6 +85,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select ".alert-danger"
+    assert_equal "Failed to create event: Name can't be blank", flash.now[:alert]
   end
 
   # Tests that the show action returns a successful response
@@ -123,6 +125,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to event_url(@event)
     follow_redirect!
     assert_select "h1", "Updated Event Name"
+    assert_equal "Event 'Updated Event Name' was successfully updated.", flash[:notice]
   end
 
   # Tests that an event can be updated with an image
@@ -160,6 +163,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_select ".alert-danger"
+    assert_equal "Failed to update event: Name can't be blank", flash.now[:alert]
   end
 
   # Tests that an event can be deleted

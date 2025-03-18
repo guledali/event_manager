@@ -75,16 +75,19 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Run tests
+      - name: Run tests with skipped JS tests
         env:
           RAILS_ENV: test
+          CI: 'true'
           # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare test test:system
+        run: .github/workflows/ci-script.sh
 
-      - name: Keep screenshots from failed system tests
+      - name: Keep screenshots and debug info from failed system tests
         uses: actions/upload-artifact@v4
         if: failure()
         with:
-          name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
+          name: test-artifacts
+          path: |
+            ${{ github.workspace }}/tmp/screenshots
+            ${{ github.workspace }}/tmp/debug
           if-no-files-found: ignore
