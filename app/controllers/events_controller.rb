@@ -7,10 +7,7 @@ class EventsController < ApplicationController
   include Authentication
 
   before_action :set_event, only: %i[show edit update destroy]
-  # We're using the Authentication concern which already has a require_authentication before_action
-  # The ApplicationController has allow_unauthenticated_access for index and show
-  before_action :check_authentication, except: %i[index show]
-  before_action :ensure_session_resumed, only: [ :index, :show ]
+  before_action :authenticate_for_management, except: %i[index show]
 
   # Displays list of events grouped by their status
   #
@@ -47,15 +44,7 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(event_params)
 
-    respond_to do |format|
-      if @event.save
-        format.html { redirect_to event_url(@event), notice: "Event was successfully created." }
-        format.json { render :show, status: :created, location: @event }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
-    end
+    respond_with_result(@event.save, @event)
   end
 
   # Updates an existing event with the provided parameters
@@ -63,19 +52,8 @@ class EventsController < ApplicationController
   #
   # @return [void]
   def update
-    if params[:remove_image] == "1" && @event.image.attached?
-      @event.image.purge
-    end
-
-    respond_to do |format|
-      if @event.update(event_params)
-        format.html { redirect_to event_url(@event), notice: "Event was successfully updated." }
-        format.json { render :show, status: :ok, location: @event }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
-    end
+    handle_image_removal if params[:remove_image] == "1"
+    respond_with_result(@event.update(event_params), @event)
   end
 
   # Permanently removes an event from the database
@@ -92,18 +70,17 @@ class EventsController < ApplicationController
 
   private
 
-  # Ensures that the session is resumed properly for public pages
-  # where authentication is not required
+  # Handles image removal when requested
   #
   # @return [void]
-  def ensure_session_resumed
-    resume_session
+  def handle_image_removal
+    @event.image.purge if @event.image.attached?
   end
 
   # Custom check for authentication that displays a specific message for event management
   #
   # @return [void]
-  def check_authentication
+  def authenticate_for_management
     unless authenticated?
       flash[:alert] = "You need to be logged in to manage events."
       redirect_to request.referer || events_path
@@ -124,5 +101,22 @@ class EventsController < ApplicationController
   # @return [ActionController::Parameters] Sanitized parameters for event
   def event_params
     params.require(:event).permit(:name, :description, :start_date, :end_date, :location, :capacity, :image)
+  end
+
+  # Standard response handling for create and update actions
+  #
+  # @param success [Boolean] Whether the operation was successful
+  # @param resource [Event] The event being created or updated
+  # @return [void]
+  def respond_with_result(success, resource)
+    respond_to do |format|
+      if success
+        format.html { redirect_to event_url(resource), notice: "Event was successfully #{resource.previously_new_record? ? 'created' : 'updated'}." }
+        format.json { render :show, status: resource.previously_new_record? ? :created : :ok, location: resource }
+      else
+        format.html { render resource.previously_new_record? ? :new : :edit, status: :unprocessable_entity }
+        format.json { render json: resource.errors, status: :unprocessable_entity }
+      end
+    end
   end
 end

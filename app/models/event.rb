@@ -10,18 +10,19 @@
 # @attr [Integer] capacity Maximum number of attendees allowed
 # @attr [ActiveStorage::Attachment] image Optional event promotional image
 class Event < ApplicationRecord
+  include ImageValidatable
+
   has_one_attached :image
   has_rich_text :description
 
-  validates :name, presence: true
-  validates :start_date, presence: true
-  validates :end_date, presence: true
-  validates :location, presence: true
+  # Validations
+  validates :name, :start_date, :end_date, :location, :description, presence: true
   validates :capacity, presence: true, numericality: { only_integer: true, greater_than: 0 }
-  validates :description, presence: true
 
-  validate :acceptable_image, if: -> { image.attached? }
   validate :end_date_after_start_date
+  validate :acceptable_image, if: -> { image.attached? }
+
+  # Scopes
 
   # Returns future events that haven't started yet
   #
@@ -39,22 +40,6 @@ class Event < ApplicationRecord
   scope :ongoing, -> { where("start_date <= ? AND end_date >= ?", Time.current, Time.current) }
 
   private
-
-  # Validates that attached images meet size and format requirements
-  #
-  # @return [void]
-  # @api private
-  def acceptable_image
-    return unless image.attached?
-
-    unless image.blob.content_type.in?(%w[image/png image/jpeg image/jpg image/gif])
-      errors.add(:image, "must be a valid image format (PNG, JPEG, JPG, GIF)")
-    end
-
-    unless image.blob.byte_size < 5.megabytes
-      errors.add(:image, "should be less than 5MB")
-    end
-  end
 
   # Validates that end_date is after start_date
   #

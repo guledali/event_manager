@@ -42,14 +42,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-            <% unless current_page?(events_path) || current_page?(root_path) %>
+            <% unless on_main_page? %>
               <li class="nav-item">
                 <%= link_to events_path, class: "nav-link px-3" do %>
                   <i class="bi bi-calendar2-week me-1"></i> Events
                 <% end %>
               </li>
             <% end %>
-            <% if Current.user %>
+            <% if user_logged_in? %>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle px-3" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="bi bi-person-circle me-1"></i> <%= Current.user.email_address %>
