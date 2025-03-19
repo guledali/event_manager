@@ -56,7 +56,8 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
         end_date: DateTime.now + 2.days,
         location: "Test Location",
         capacity: 100,
-        image: @test_image
+        image: @test_image,
+        user_id: @user.id
       } }
     end
 
@@ -79,7 +80,8 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
         start_date: DateTime.now + 1.day,
         end_date: DateTime.now + 2.days,
         location: "Test Location",
-        capacity: 100
+        capacity: 100,
+        user_id: @user.id
       } }
     end
 
@@ -119,7 +121,8 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       start_date: @event.start_date,
       end_date: @event.end_date,
       location: @event.location,
-      capacity: @event.capacity
+      capacity: @event.capacity,
+      user_id: @user.id
     } }
 
     assert_redirected_to event_url(@event)
@@ -140,7 +143,8 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
         end_date: @event.end_date,
         location: @event.location,
         capacity: @event.capacity,
-        image: @test_image
+        image: @test_image,
+        user_id: @user.id
       }
     }
 
@@ -158,7 +162,8 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
       start_date: @event.start_date,
       end_date: @event.end_date,
       location: @event.location,
-      capacity: @event.capacity
+      capacity: @event.capacity,
+      user_id: @user.id
     } }
 
     assert_response :unprocessable_entity

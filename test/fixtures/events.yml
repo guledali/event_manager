@@ -6,6 +6,7 @@ conference:
   end_date: <%= DateTime.now + 32.days %>
   location: San Francisco Convention Center
   capacity: 500
+  user: one
 
 workshop:
   name: Coding Workshop
@@ -13,6 +14,7 @@ workshop:
   end_date: <%= DateTime.now + 15.days + 8.hours %>
   location: Downtown Tech Hub
   capacity: 50
+  user: one
 
 past_event:
   name: Past Conference
@@ -20,6 +22,7 @@ past_event:
   end_date: <%= DateTime.now - 58.days %>
   location: Convention Center
   capacity: 300
+  user: one
 
 ongoing_event:
   name: Current Exhibition
@@ -27,6 +30,7 @@ ongoing_event:
   end_date: <%= DateTime.now + 5.days %>
   location: Art Gallery
   capacity: 200
+  user: two
 
 invalid_dates:
   name: Invalid Event
@@ -34,3 +38,4 @@ invalid_dates:
   end_date: <%= DateTime.now + 5.days %>
   location: Test Location
   capacity: 100
+  user: one

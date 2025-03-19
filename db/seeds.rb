@@ -11,11 +11,14 @@ require 'fileutils'
 
 # Create a default admin user
 puts "Creating default admin user..."
-if User.find_by(email_address: "guled@hey.com").nil?
-  User.create!(email_address: "guled@hey.com", password: "admin")
+admin_user = if User.find_by(email_address: "dhh@hey.com").nil?
+  user = User.create!(name: "DHH", email_address: "dhh@hey.com", password: "admin")
   puts "✅ Default admin user created"
+  user
 else
+  user = User.find_by(email_address: "dhh@hey.com")
   puts "Default admin user already exists"
+  user
 end
 
 # Clear existing events to avoid duplicates when re-seeding
@@ -108,7 +111,8 @@ events_data = [
     end_date: DateTime.now + 32.days,
     location: "San Francisco Convention Center",
     capacity: 500,
-    image_filename: stock_images[:tech_conference][:filename]
+    image_filename: stock_images[:tech_conference][:filename],
+    user: admin_user
   },
   {
     name: "Music Festival",
@@ -133,7 +137,8 @@ events_data = [
     end_date: DateTime.now + 63.days,
     location: "Central Park",
     capacity: 5000,
-    image_filename: stock_images[:music_festival][:filename]
+    image_filename: stock_images[:music_festival][:filename],
+    user: admin_user
   },
   {
     name: "Coding Workshop",
@@ -158,7 +163,8 @@ events_data = [
     end_date: DateTime.now + 15.days + 8.hours,
     location: "Downtown Tech Hub",
     capacity: 50,
-    image_filename: stock_images[:coding_workshop][:filename]
+    image_filename: stock_images[:coding_workshop][:filename],
+    user: admin_user
   },
   {
     name: "Charity Gala",
@@ -183,7 +189,8 @@ events_data = [
     end_date: DateTime.now + 45.days + 23.hours,
     location: "Grand Hotel Ballroom",
     capacity: 200,
-    image_filename: stock_images[:charity_gala][:filename]
+    image_filename: stock_images[:charity_gala][:filename],
+    user: admin_user
   },
   {
     name: "Business Networking",
@@ -208,7 +215,8 @@ events_data = [
     end_date: DateTime.now + 7.days + 20.hours,
     location: "Executive Lounge",
     capacity: 75,
-    image_filename: stock_images[:business_networking][:filename]
+    image_filename: stock_images[:business_networking][:filename],
+    user: admin_user
   }
 ]
 

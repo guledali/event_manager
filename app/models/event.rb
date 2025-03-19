@@ -14,6 +14,7 @@ class Event < ApplicationRecord
 
   has_one_attached :image
   has_rich_text :description
+  belongs_to :user
 
   # Validations
   validates :name, :start_date, :end_date, :location, :description, presence: true
@@ -21,6 +22,13 @@ class Event < ApplicationRecord
 
   validate :end_date_after_start_date
   validate :acceptable_image, if: -> { image.attached? }
+
+  # Returns the name of the user who organized this event
+  #
+  # @return [String] The organizer's name
+  def organizer
+    self.user.name
+  end
 
   # Scopes
 

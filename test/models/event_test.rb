@@ -11,6 +11,7 @@ class EventTest < ActiveSupport::TestCase
   # @return [void]
   setup do
     @test_image = fixture_file_upload("test_image.jpg", "image/jpeg")
+    @user = users(:one)
   end
 
   # Tests that events require a name to be valid
@@ -22,7 +23,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     assert_not event.save, "Saved the event without a name"
   end
@@ -36,7 +38,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     # Since ActionText descriptions are validated differently, we need to check for error
     event.save
@@ -52,7 +55,8 @@ class EventTest < ActiveSupport::TestCase
       description: "Test description",
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     assert_not event.save, "Saved the event without a start date"
   end
@@ -66,7 +70,8 @@ class EventTest < ActiveSupport::TestCase
       description: "Test description",
       start_date: DateTime.now + 1.day,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     assert_not event.save, "Saved the event without an end date"
   end
@@ -80,7 +85,8 @@ class EventTest < ActiveSupport::TestCase
       description: "Test description",
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     assert_not event.save, "Saved the event without a location"
   end
@@ -94,7 +100,8 @@ class EventTest < ActiveSupport::TestCase
       description: "Test description",
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
-      location: "Test location"
+      location: "Test location",
+      user_id: @user.id
     )
     assert_not event.save, "Saved the event without a capacity"
   end
@@ -124,7 +131,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: -10
+      capacity: -10,
+      user_id: @user.id
     )
     assert_not event.save, "Saved the event with a negative capacity"
   end
@@ -139,7 +147,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 2.days,
       end_date: DateTime.now + 1.day,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     assert_not event.save, "Saved the event with end date before start date"
     assert_includes event.errors[:end_date], "must be after the start date"
@@ -155,7 +164,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     assert event.save, "Could not save a valid event"
   end
@@ -170,7 +180,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
     event.image.attach(@test_image)
     assert event.save, "Could not save a valid event with image"
@@ -219,7 +230,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
 
     # HTML content with formatting
@@ -240,7 +252,8 @@ class EventTest < ActiveSupport::TestCase
       start_date: DateTime.now + 1.day,
       end_date: DateTime.now + 2.days,
       location: "Test location",
-      capacity: 100
+      capacity: 100,
+      user_id: @user.id
     )
 
     html_content = '<div>This has a <a href="https://example.com">link</a> and <strong>bold text</strong>.</div>'
@@ -261,7 +274,8 @@ class EventTest < ActiveSupport::TestCase
       end_date: DateTime.now + 2.days,
       location: "Test location",
       capacity: 100,
-      description: ActionText::Content.new("Simple text description")
+      description: ActionText::Content.new("Simple text description"),
+      user_id: @user.id
     )
 
     # Attempt to add HTML with an attachment figure

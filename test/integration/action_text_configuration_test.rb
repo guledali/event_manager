@@ -4,6 +4,12 @@ require "test_helper"
 
 # Integration tests for ActionText configuration
 class ActionTextConfigurationTest < ActionDispatch::IntegrationTest
+  # Set up test data before each test
+  #
+  # @return [void]
+  setup do
+    @user = users(:one)
+  end
   # Tests that our config override prevents image attachments
   #
   # @return [void]
@@ -23,7 +29,8 @@ class ActionTextConfigurationTest < ActionDispatch::IntegrationTest
       end_date: DateTime.now + 2.days,
       location: "Test Location",
       capacity: 100,
-      description: "Base description"
+      description: "Base description",
+      user_id: @user.id
     )
 
     # HTML that would normally create an attachment but should be stripped
