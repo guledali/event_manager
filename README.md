@@ -19,7 +19,7 @@ And Yes Rails is still undoubtedly **best** for CRUD Apps and MVP
 - ActiveStorage for file handling
 - ActionText for rich text content
 - Authentication generator
-- Unit testing coverage
+- Unit testing coverage with Minitest & fixtures
 - Bootstrap for styling and theming
 - AI - Cursor
 
