@@ -1,7 +1,7 @@
 # Event Manager
 
 A simple event management application built with Ruby on Rails 8.0.2.
-And Yes Rails is still undoubtedly best for CRUD Apps
+And Yes Rails is still undoubtedly best for CRUD Apps and MVP
 
 ## Features
 
@@ -18,6 +18,7 @@ And Yes Rails is still undoubtedly best for CRUD Apps
 - Ruby on Rails 8.0.2
 - ActiveStorage for file handling
 - ActionText for rich text content
+- Authentication generator
 - Unit testing coverage
 - Bootstrap for styling and theming
 - AI - Cursor
