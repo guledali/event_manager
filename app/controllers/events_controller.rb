@@ -101,6 +101,6 @@ class EventsController < ApplicationController
   #
   # @return [ActionController::Parameters] Sanitized parameters for event
   def event_params
-    params.require(:event).permit(:name, :description, :start_date, :end_date, :location, :capacity, :image, :user_id)
+    params.expect(event: [ :name, :description, :start_date, :end_date, :location, :capacity, :image, :user_id ])
   end
 end
