@@ -1,7 +1,7 @@
 # Event Manager
 
-A simple event management application built with Ruby on Rails 8.0.2.
-And Yes Rails is still undoubtedly best for CRUD Apps and MVP
+A simple event management application built with `Ruby on Rails 8.0.2.`
+And Yes Rails is still undoubtedly **best** for CRUD Apps and MVP
 
 ## Features
 
