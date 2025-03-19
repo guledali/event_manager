@@ -30,22 +30,28 @@ class Event < ApplicationRecord
     self.user.name
   end
 
-  # Scopes
+  # Class Methods
 
   # Returns future events that haven't started yet
   #
   # @return [ActiveRecord::Relation<Event>] Collection of upcoming events sorted by start date
-  scope :upcoming, -> { where("start_date > ?", Time.current).order(start_date: :asc) }
+  def self.upcoming
+    where("start_date > ?", Time.current).order(start_date: :asc)
+  end
 
   # Returns past events that have already ended
   #
   # @return [ActiveRecord::Relation<Event>] Collection of past events sorted by start date in descending order
-  scope :past, -> { where("end_date < ?", Time.current).order(start_date: :desc) }
+  def self.past
+    where("end_date < ?", Time.current).order(start_date: :desc)
+  end
 
   # Returns events currently in progress
   #
   # @return [ActiveRecord::Relation<Event>] Collection of ongoing events
-  scope :ongoing, -> { where("start_date <= ? AND end_date >= ?", Time.current, Time.current) }
+  def self.ongoing
+    where("start_date <= ? AND end_date >= ?", Time.current, Time.current)
+  end
 
   private
 
