@@ -9,6 +9,7 @@ class EventsController < ApplicationController
 
   before_action :set_event, only: %i[show edit update destroy]
   before_action :authenticate_for_management, except: %i[index show]
+  before_action :resume_session, only: %i[index show]
 
   # Displays list of events grouped by their status
   #

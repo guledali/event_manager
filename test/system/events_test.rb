@@ -14,6 +14,19 @@ class EventsTest < ApplicationSystemTestCase
     find('input[type="submit"][value="Sign in"]').click
   end
 
+  # Test that navbar brand link navigates to root path
+  #
+  # @return [void]
+  test "navbar brand link navigates to root path" do
+    skip if ENV["CI"] == "true"
+
+    visit events_url
+    assert_current_path events_url
+
+    click_on "Event Manager"
+    assert_current_path root_path
+  end
+
   # Tests that the events index page renders correctly
   #
   # @return [void]
