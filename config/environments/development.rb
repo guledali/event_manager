@@ -43,6 +43,16 @@ Rails.application.configure do
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 
+  # Explicitly set log level to debug to see all log messages
+  config.log_level = :debug
+
+  # Force logs to STDOUT in addition to the log file
+  config.logger = ActiveSupport::Logger.new(STDOUT)
+  config.logger.level = :debug
+
+  # Add prettier formatting to logs
+  config.colorize_logging = true
+
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
