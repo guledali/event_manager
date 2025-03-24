@@ -22,6 +22,7 @@ And Yes Rails is still undoubtedly **best** for CRUD Apps and MVP
 - Unit testing coverage with Minitest & fixtures
 - Bootstrap for styling and theming
 - AI - Cursor
+- Deploy with [Fly.io](https://fly.io)
 
 ## Getting Started
 
@@ -35,7 +36,7 @@ And Yes Rails is still undoubtedly **best** for CRUD Apps and MVP
 
 1. Clone the repository
 2. Run `bundle install`
-3. Set up the database: `rails db:create db:migrate`
+3. Set up the database: `rails db:create db:migrate db:seed`
 4. Start the server: `rails server`
 
 ## Testing
