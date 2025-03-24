@@ -22,7 +22,7 @@ And Yes Rails is still undoubtedly **best** for CRUD Apps and MVP
 - Unit testing coverage with Minitest & fixtures
 - Bootstrap for styling and theming
 - AI - Cursor
-- Deploy with [Fly.io](https://fly.io)
+- Deployed with [Fly.io](https://fly.io)
 
 ## Getting Started
 
