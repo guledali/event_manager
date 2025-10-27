@@ -83,7 +83,7 @@ jobs:
         run: .github/workflows/ci-script.sh
 
       - name: Keep screenshots and debug info from failed system tests
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: test-artifacts
